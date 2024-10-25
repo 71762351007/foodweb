@@ -10,7 +10,10 @@ mongoDB();
 // CORS configuration
 const corsOptions = {
   origin: (origin, callback) => {
-    const allowedOrigins = ['https://foodweb-front-d9t45r9s0-71762351007s-projects.vercel.app', 'https://foodweb-1-3y09.onrender.com'];  
+    const allowedOrigins = [
+      'https://foodweb-front-d9t45r9s0-71762351007s-projects.vercel.app', 
+      'https://foodweb-1-3y09.onrender.com'
+    ];
     // Allow requests with no 'origin' (like mobile apps or curl requests)
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
