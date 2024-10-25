@@ -1,38 +1,41 @@
-const express = require('express')
-const app = express()
-const port = 5000
-const mongoDB=require("./db")
-const cors=require("cors");
+const express = require('express');
+const app = express();
+const port = 5000;
+const mongoDB = require('./db');
+const cors = require('cors');
+
+// Initialize MongoDB connection
+mongoDB();
+
+// CORS configuration
 const corsOptions = {
   origin: (origin, callback) => {
-    const allowedOrigins = ['https://foodweb-nu.vercel.app', '*'];
+    const allowedOrigins = ['https://foodweb-front.vercel.app', 'https://foodweb-1-3y09.onrender.com'];
+    // Allow requests with no 'origin' (like mobile apps or curl requests)
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true,
+  credentials: true, // Enable cookies to be sent across different origins
   optionSuccessStatus: 200,
 };
-mongoDB();
 
-app.use((req,res,next)=>{
-  res.setHeader("Access-Control-Allow-Origin"," 192.168.56.1");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin,X-Requested-With , Content-Type, Accept"
-  );
-  next();
-});
 app.use(cors(corsOptions));
-app.use(express.json())
-app.use('/api',require("./Routes/CreateUser"));
-app.use("/api",require("./Routes/DisplayData"));
-app.use("/api",require("./Routes/OrderData"));
+app.use(express.json());
+
+// Define API routes
+app.use('/api', require('./Routes/CreateUser'));
+app.use('/api', require('./Routes/DisplayData'));
+app.use('/api', require('./Routes/OrderData'));
+
+// Base endpoint
 app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+  res.send('Hello World!');
+});
+
+// Start server
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+  console.log(`Example app listening on port ${port}`);
+});
