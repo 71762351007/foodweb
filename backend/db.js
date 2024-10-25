@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 mongoose.set('strictQuery', true);
 
 // Update the database name to the one you are using in MongoDB Atlas
-const mongoURI = "mongodb+srv://arunkumarnataraj2001:1234@cluster0.3cyis.mongodb.net/yourdbname?retryWrites=true&w=majority";
+const mongoURI = "mongodb+srv://arunkumarnataraj2001:1234@cluster0.3cyis.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 const mongoDB = async () => {
     try {
