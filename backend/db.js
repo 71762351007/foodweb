@@ -1,23 +1,30 @@
 const mongoose = require("mongoose");
 mongoose.set('strictQuery', true);
-const mongoURI = "mongodb+srv://arunkumarnataraj2001:1234@cluster0.3cyis.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+
+const mongoURI = "mongodb+srv://arunkumarnataraj2001:1234@cluster0.3cyis.mongodb.net/yourdbname?retryWrites=true&w=majority";
+
 const mongoDB = async () => {
-    await mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true }, async (err, result) => {
-        if (err) console.log("---", err)
-        else {
-            console.log("Connected Successfully");
-            const fetched_data = await mongoose.connection.db.collection("food_items");
-            fetched_data.find({}).toArray(async function (err, data) {
-                const foodCategory = await mongoose.connection.db.collection("food_categories");
-                foodCategory.find({}).toArray(function (err, catData) {
-                    if (err) console.log(err);
-                    else {
-                        global.food_items = data;
-                        global.foodCategory=catData;
-                    }
-                })
-            })
-        }
-    });
-}
+    try {
+        // Connect to MongoDB
+        await mongoose.connect(mongoURI, { 
+            useNewUrlParser: true, 
+            useUnifiedTopology: true 
+        });
+        console.log("Connected to MongoDB Successfully");
+
+        // Fetch collections after successful connection
+        const fetched_data = await mongoose.connection.db.collection("food_items").find({}).toArray();
+        const foodCategory = await mongoose.connection.db.collection("food_categories").find({}).toArray();
+
+        // Store globally if necessary
+        global.food_items = fetched_data;
+        global.foodCategory = foodCategory;
+
+        console.log("Data fetched and stored in global variables");
+
+    } catch (err) {
+        console.error("MongoDB connection error:", err);
+    }
+};
+
 module.exports = mongoDB;
