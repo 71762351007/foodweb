@@ -3,11 +3,18 @@ const app = express()
 const port = 5000
 const mongoDB=require("./db")
 const cors=require("cors");
-const corsOptions ={
-   origin:'*', 
-   credentials:true,            //access-control-allow-credentials:true
-   optionSuccessStatus:200,
-}
+const corsOptions = {
+  origin: (origin, callback) => {
+    const allowedOrigins = ['https://foodweb-nu.vercel.app', '*'];
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  optionSuccessStatus: 200,
+};
 mongoDB();
 
 app.use((req,res,next)=>{
